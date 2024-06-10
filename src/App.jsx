@@ -3,6 +3,7 @@ import AppLayout from './pages/AppLayout';
 import Error from './pages/Error';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage'
+import ResultPage from './pages/ResultPage';
 import ScanPage from './pages/ScanPage';
 import SignUpPage from './pages/SignUpPage'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: '/scan',
         element: <ScanPage/>
+      },
+      {
+        path: '/result',
+        element: <ResultPage/>
       }
     ]
   }
