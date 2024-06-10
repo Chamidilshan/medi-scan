@@ -15,7 +15,9 @@ import {
 import LinkButton from './LinkButton'
 import { Link } from 'react-router-dom'
 import { Mail } from "lucide-react"
-
+import { createClient } from '@supabase/supabase-js'
+  import { Auth } from '@supabase/auth-ui-react'
+  import { ThemeSupa } from '@supabase/auth-ui-shared'
 
 const LoginPage = () => {
   return (
@@ -45,7 +47,7 @@ const LoginPage = () => {
             </Button>
             <p>Don't have an account?</p>
               <Button asChild className='bg-secondary'>
-                <Link to={'/signUp'}>Sign up</Link>
+                <Link to={'/home'}>Sign up</Link>
                 </Button>  
           </div>
         </form>

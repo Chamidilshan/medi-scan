@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -12,8 +12,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+// import { supabase } from '../../src/client'
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
-const SignUpPage = () => {
+
+const SignUpPage = async() => {
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+
+  async function handleSubmit (){
+    try {
+      // const { data, error } = await supabase.auth.signUp({
+      //   email: formData.email,
+      //   password: formData.password,
+      // });
+
+      console.log('success');
+      
+    } catch (error) {
+      console.log(error);
+    }
+  } 
+
   return (
     <div>
         <Card>
@@ -21,7 +44,7 @@ const SignUpPage = () => {
           <CardTitle>Create an account</CardTitle>
         </CardHeader>
       <CardContent>
-      <form>
+      <form onSubmit={handleSubmit}>
           <div className="grid w-[350px] items-center gap-4">
             <div className="flex flex-col items-start space-y-1.5">
               <Label htmlFor="name">Email</Label>
