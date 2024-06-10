@@ -20,7 +20,7 @@ export default function HomePage() {
         <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8fMKCqLjqFKL_zaAVlqRzFbWlCGFQNqHN5w&s"} alt="Image" className="rounded-md object-cover" />
         </div>
         <Button asChild className='rounded-xl mt-6 font-semibold'>
-                <Link to={'/home'}>Start Scanning</Link>
+                <Link to={'/scan'}>Start Scanning</Link>
         </Button>  
         <p className='text-gray-500 text-xs mt-2'>
             Version 1.0.0
