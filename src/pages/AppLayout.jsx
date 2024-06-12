@@ -1,6 +1,7 @@
 import { Outlet, useNavigation } from 'react-router-dom';
 import Loader from './Loader';
 import Header from './Header';
+import { Toaster } from "@/components/ui/toaster"
 
 function AppLayout(){
     const navigation = useNavigation();
@@ -11,10 +12,10 @@ function AppLayout(){
         {isLoading  && <Loader/>}
 
         <Header/>
-
             <main className='mx-auto max-w-3xl'>
                 <Outlet/>
             </main>
+            <Toaster />
 
     </div>
   );

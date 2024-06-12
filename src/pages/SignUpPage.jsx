@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { EyeIcon } from 'lucide-react'
+import { EyeIcon, Loader2 } from 'lucide-react'
 import { AlertCircle } from "lucide-react"
 import {
   Card,
@@ -16,15 +16,23 @@ import {
 import { supabase } from '../../src/client'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AuthApiError } from '@supabase/supabase-js'
+import { useToast } from "@/components/ui/use-toast"
+import { useNavigate } from 'react-router-dom'
 
 
 const SignUpPage = () => {
+
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     confirmPassword: ''
   })
+
+  const [isChecked, setIsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleChange(event) {
     setFormData((prevFormData)=>{
@@ -34,49 +42,64 @@ const SignUpPage = () => {
       }
     })
   }
+  
+  const handleCheck = () =>{
+    setIsChecked(!isChecked);
+    console.log(isChecked);
+  }
 
   async function handleSubmit (){
     event.preventDefault();
-    console.log(formData.confirmPassword);
-    console.log(formData.password);
-   if(formData.password !== formData.confirmPassword){
-    return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>
-          Your session has expired. Please log in again.
-        </AlertDescription>
-      </Alert>
-    )
-    }
-    try {
-      console.log(formData.email, formData.password, formData.confirmPassword); 
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      console.log('data:', data);
-
-      console.log(data);
-      console.log(error); 
-
-      if (error) {
-        console.error('Error signing up:', error);
-        if(error instanceof AuthApiError){
-          console.log('Error status:', error.status)
-          console.log('Error message:', error.message)
-          console.log('Response:', error.response)
+  
+   if(formData.email === '' || formData.password === '' || formData.confirmPassword === ''){ 
+    toast({
+      description: 'Please fill all details in the form',
+      status: 'error'
+    })
+  }else if(formData.password !== formData.confirmPassword){
+      toast({
+        description: "The passwords you entered do not match. Please ensure your password and confirmation password are the same.",
+        status: 'error'
+      })
+      }else if(!isChecked){
+        toast({
+          title: "Please accept the terms of service and privacy policy.",
+        })
+      }else{
+        try {
+        setIsLoading(true);
+          const { data, error } = await supabase.auth.signUp({
+            email: formData.email,
+            password: formData.password,
+          });
+    
+          if (error) {
+            setIsLoading(false);
+            toast({
+              title: "There was an error during sign up.",
+              description: error.message,
+              status: "error",
+              variant: "destructive",
+              duration: 5000,
+              isClosable: true,
+            });
+          } else {
+            setIsLoading(false);
+            navigate('/home');
+          }
+          
+        } catch (error) {
+          toast({
+            title: "Something went wrong.",
+            description: error,
+            status: "error",
+            variant: "destructive",
+            duration: 5000,
+            isClosable: true,
+          });
         }
-       
-      } else {
-        console.log('Success signing up:', data);
       }
-      
-    } catch (error) {
-      console.log(error);
-    }
+   
   } 
 
   return (
@@ -101,7 +124,7 @@ const SignUpPage = () => {
               <Input type='password' name="confirmPassword" placeholder="" onChange={handleChange} />
             </div>
             <div className="flex items-center mt-5 space-x-2">
-           <Checkbox id="terms"/>
+           <Checkbox id="terms" checked={isChecked} onCheckedChange={handleCheck}/>
               <label
                 htmlFor="terms"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -109,7 +132,11 @@ const SignUpPage = () => {
                 I agree to the Terms of Service and Privacy Policy. 
               </label>
           </div>
-          <Button className='mt-8'>Create Account</Button>
+          {!isLoading && <Button className='mt-8'>Create Account</Button>}
+          {isLoading && <Button disabled className='rounded-xl mt-8 font-semibold'>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Creating Your Account
+        </Button>}
           </div>
          </form>
       </CardContent>

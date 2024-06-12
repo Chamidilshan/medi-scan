@@ -1,8 +1,10 @@
+// import { Loader } from 'lucide-react';
 import './App.css'
 import AppLayout from './pages/AppLayout';
 import Error from './pages/Error';
 import HistoryPage from './pages/HistoryPage';
 import HomePage from './pages/HomePage';
+import Loader from './pages/Loader';
 import LoginPage from './pages/LoginPage'
 import ResultPage from './pages/ResultPage';
 import ScanPage from './pages/ScanPage';
@@ -24,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/home',
-        element: <HomePage/>
+        element: <Loader/>
       },
       {
         path: '/scan',
