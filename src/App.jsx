@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/home',
-        element: <Loader/>
+        element: <HomePage/>
       },
       {
         path: '/scan',

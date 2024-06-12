@@ -84,6 +84,7 @@ const SignUpPage = () => {
               isClosable: true,
             });
           } else {
+            console.log('Success signing up:', data);
             setIsLoading(false);
             navigate('/home');
           }
