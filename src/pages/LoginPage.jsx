@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -33,6 +33,26 @@ const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => { 
+        if (event === 'SIGNED_IN') {
+          console.log('User has signed in');
+          console.log('session', session);
+          const profileImageUrl = session.user.user_metadata.avatar_url;
+         console.log('Profile Image URL:', profileImageUrl);
+          navigate('/home'); 
+        } else if (event === 'SIGNED_OUT') {
+          console.log('User has signed out');
+        }
+      }
+    ); 
+    return () => {
+      authListener.subscription.unsubscribe();
+      // authListener.unsubscribe();
+    };
+  }, []);
+
 
   function handleChange(event) {
     console.log('event', event.target.value);
@@ -42,6 +62,22 @@ const LoginPage = () => {
         [event.target.id]: event.target.value
       }
     })
+  }
+
+  async function handleGoogleSignIn(){
+
+    event.preventDefault();
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+
+    });
+    console.log('data', data); 
+    if (data) {
+      console.log('User has signed in');
+  } else if (error) {
+      console.log('An error occurred:', error.message);
+  } 
+   
   }
 
   async function handleSubmit (){
@@ -106,7 +142,7 @@ const LoginPage = () => {
               } 
               <FontAwesomeIcon icon="fa-brands fa-google" />
             <p>or</p>
-            <Button className='bg-secondary'>
+            <Button className='bg-secondary'  onClick={handleGoogleSignIn}>
             <FontAwesomeIcon icon={faGoogle} className="mr-4 h-4 w-4" />Sign in with Google
             </Button>
             <p>Don't have an account?</p>
