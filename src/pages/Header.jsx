@@ -10,7 +10,7 @@ function Header() {
     <Link to="/scan" className="pr-5">
         Upload Document
       </Link>
-      <Link to="/" className="pr-5">
+      <Link to="/history" className="pr-5">
         Document History
       </Link>
       <Link to="/" className="pr-5">

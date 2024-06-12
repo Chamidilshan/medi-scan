@@ -1,6 +1,7 @@
 import './App.css'
 import AppLayout from './pages/AppLayout';
 import Error from './pages/Error';
+import HistoryPage from './pages/HistoryPage';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage'
 import ResultPage from './pages/ResultPage';
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
         element:<LoginPage/>
       },
       {
-        path: 'signUp',
+        path: '/signUp',
         element: <SignUpPage/>
       },
       {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: '/result',
         element: <ResultPage/>
+      },
+      {
+        path: '/history',
+        element: <HistoryPage/>
       }
     ]
   }

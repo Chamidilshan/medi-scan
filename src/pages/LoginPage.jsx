@@ -47,7 +47,7 @@ const LoginPage = () => {
             </Button>
             <p>Don't have an account?</p>
               <Button asChild className='bg-secondary'>
-                <Link to={'/home'}>Sign up</Link>
+                <Link to={'/signUp'}>Sign up</Link>
                 </Button>  
           </div>
         </form>
