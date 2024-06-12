@@ -1,13 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FileInput, Label } from "flowbite-react";
+import { useNavigate } from 'react-router-dom';
 
 export default function ScanPage() {
     const[isLoading, setIsLoading] = React.useState(false);
+    const navigate = useNavigate();
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const handleOnClick = () => {
-        setIsLoading(true);
+      if(!selectedImage)
+        return;
+      setIsLoading(true);
+      navigate('/result');
+    }
+
+    function handleImageSelect(e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+    
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+    
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        setSelectedImage(null);
+      }
     }
 
   return (
@@ -21,7 +42,9 @@ export default function ScanPage() {
         <div>
 
         <div className="flex w-full mt-8 tems-center justify-center">
-      <Label
+      
+      {!selectedImage && (
+        <Label
         htmlFor="dropzone-file"
         className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
       >
@@ -46,10 +69,15 @@ export default function ScanPage() {
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
         </div>
-        <FileInput id="dropzone-file" className="hidden" />
       </Label>
+      )}
+
+      {selectedImage && (
+        <img src={selectedImage} alt="Selected" className="mt-4" />
+      )}
     </div>
      
+    <FileInput id="dropzone-file" className="unhidden mt-2 ml-20 mr-20"  onChange={handleImageSelect} />
     {!isLoading && <Button onClick={handleOnClick} className='rounded-xl mt-6 font-semibold'>
       Start Scanning
     </Button>}
