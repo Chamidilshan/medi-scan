@@ -20,11 +20,14 @@ import { createClient } from '@supabase/supabase-js'
   import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '../../src/client'
+import { useDispatch } from 'react-redux';
+import { updateUserDetails } from './Slices/UserSlice';
 
 const LoginPage = () => {
 
   const { toast } = useToast();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -40,6 +43,12 @@ const LoginPage = () => {
           console.log('User has signed in');
           console.log('session', session);
           const profileImageUrl = session.user.user_metadata.avatar_url;
+          dispatch(updateUserDetails({
+            userName: session.user.user_metadata.full_name,
+            userId: session.user.id,
+            userProfilePhoto: session.user.user_metadata.avatar_url,
+            userToken: session.access_token
+          }));
          console.log('Profile Image URL:', profileImageUrl);
           navigate('/home'); 
         } else if (event === 'SIGNED_OUT') {
@@ -73,7 +82,7 @@ const LoginPage = () => {
     });
     console.log('data', data); 
     if (data) {
-      console.log('User has signed in');
+      console.log('User has signed in'); 
   } else if (error) {
       console.log('An error occurred:', error.message);
   } 
