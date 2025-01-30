@@ -18,7 +18,7 @@ const userSlice = createSlice({
             state.user.userName = action.payload.userName; 
             state.user.userProfilePhoto = action.payload.userProfilePhoto;
             state.user.userToken = action.payload.userToken; 
-        },
+        },  
         logoutUser(state){ 
             state.user = {
                 userName: '',

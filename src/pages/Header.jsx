@@ -56,10 +56,18 @@ function Header() {
                 className="overflow-hidden rounded-full"
               >
 
-                <img src={userDetails.userProfilePhoto}
-                alt="Avatar" 
-                className="overflow-hidden rounded-full" 
+               {userDetails.userProfilePhoto ? (
+                 <img src={userDetails.userProfilePhoto}
+                 alt="Avatar" 
+                 className="overflow-hidden rounded-full" 
+                 />
+               ) : (
+                <img 
+                  src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" 
+                  alt="Default Avatar" 
+                  className="w-full h-full object-cover rounded-full" 
                 />
+               )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
