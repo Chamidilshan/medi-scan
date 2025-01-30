@@ -9,15 +9,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
-import { Image } from 'lucide-react';
+import { Image, Menu, X } from 'lucide-react';
 import { supabase } from '../../client'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails, logoutUser } from './Slices/UserSlice';
+import { useState } from 'react';
 
 function Header() {
 
   const navigation = useNavigate();
-
+  const [isOpen, setIsOpen] = useState(false); 
   const userDetails = useSelector(getUserDetails);
   const dispatch = useDispatch();
 
@@ -38,10 +39,19 @@ function Header() {
         MediScan
       </Link>
     <div>
-    <Link to="/scan" className="pr-5">
+    <button
+        className="sm:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+    <nav className={`${
+          isOpen ? 'block' : 'hidden'
+        } sm:flex sm:items-center sm:space-x-6 absolute sm:static top-14 left-0 w-full sm:w-auto bg-white sm:bg-transparent shadow-md sm:shadow-none px-4 sm:px-0 py-3 sm:py-0`}>
+    <Link to="/scan" className="pr-5" onClick={()=>setIsOpen(false)}>
         Upload Document
       </Link>
-      <Link to="/history" className="pr-5">
+      <Link to="/history" className="pr-5" onClick={()=>setIsOpen(false)}>
         Document History
       </Link>
       {/* <Link to="/" className="pr-5">
@@ -80,7 +90,7 @@ function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
         } 
-      
+    </nav>
     </div>
     
     </header>
