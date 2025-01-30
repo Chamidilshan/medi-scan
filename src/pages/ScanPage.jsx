@@ -3,21 +3,45 @@ import { Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FileInput, Label } from "flowbite-react";
 import { useNavigate } from 'react-router-dom';
+import { useGenereateResultMutation } from './Slices/GeminiSlice';
+import { storeResults, storeSelectedImage } from './Slices/ResultsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserDetails } from './Slices/UserSlice';
 
 export default function ScanPage() {
     const[isLoading, setIsLoading] = React.useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [ generateResult , { isSuccess, isError, error }] = useGenereateResultMutation();
+    const user = useSelector(getUserDetails);
 
-    const handleOnClick = () => {
+    console.log('user details', user);
+
+    const handleOnScan = async() => {
       if(!selectedImage)
         return;
       setIsLoading(true);
-      navigate('/result');
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('userId', user.userId )
+      try {
+        const response = await generateResult(formData).unwrap();
+        console.log('Upload Response:', response);  
+        dispatch(storeResults(response));
+        dispatch(storeSelectedImage(selectedFile));
+        navigate('/result'); 
+        setIsLoading(false);
+      } catch (err) {
+        console.error('Error:', err); 
+      }
+      setIsLoading(false);
     }
 
     function handleImageSelect(e) {
       const file = e.target.files[0];
+      setSelectedFile(file);
       const reader = new FileReader();
     
       reader.onloadend = () => {
@@ -29,7 +53,7 @@ export default function ScanPage() {
       } else {
         setSelectedImage(null);
       }
-    }
+    } 
 
   return (
     <div>
@@ -78,7 +102,7 @@ export default function ScanPage() {
     </div>
      
     <FileInput id="dropzone-file" className="unhidden mt-2 ml-20 mr-20"  onChange={handleImageSelect} />
-    {!isLoading && <Button onClick={handleOnClick} className='rounded-xl mt-6 font-semibold'>
+    {!isLoading && <Button onClick={handleOnScan} className='rounded-xl mt-6 font-semibold'>
       Start Scanning
     </Button>}
 

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
 import { Image } from 'lucide-react';
-import { supabase } from '../../src/client'
+import { supabase } from '../../client'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails, logoutUser } from './Slices/UserSlice';
 

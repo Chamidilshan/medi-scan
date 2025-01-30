@@ -14,10 +14,10 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         updateUserDetails(state, action){ //payload may be userId, userName, userToken, userProfilePhoto
-            state.user.userId = action.payload.user;
-            state.user.userName = action.payload.userName;
+            state.user.userId = action.payload.userId;
+            state.user.userName = action.payload.userName; 
             state.user.userProfilePhoto = action.payload.userProfilePhoto;
-            state.user.userToken = action.payload.userToken;
+            state.user.userToken = action.payload.userToken; 
         },
         logoutUser(state){ 
             state.user = {

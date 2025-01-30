@@ -11,9 +11,9 @@ import {
   CardDescription,
   CardFooter, 
   CardHeader,
-  CardTitle,
+  CardTitle, 
 } from "@/components/ui/card"
-import { supabase } from '../../src/client'
+import { supabase } from '../../client'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AuthApiError } from '@supabase/supabase-js'
 import { useToast } from "@/components/ui/use-toast"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -7,19 +7,14 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import LinkButton from './LinkButton'
 import { Link, useNavigate } from 'react-router-dom'
-import { Loader2, Mail } from "lucide-react"
-import { createClient } from '@supabase/supabase-js'
-  import { Auth } from '@supabase/auth-ui-react'
-  import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { Loader2, } from "lucide-react"
 import { useToast } from '@/components/ui/use-toast';
-import { supabase } from '../../src/client'
+import { supabase } from '../../client'
 import { useDispatch } from 'react-redux';
 import { updateUserDetails } from './Slices/UserSlice';
 
@@ -42,10 +37,12 @@ const LoginPage = () => {
         if (event === 'SIGNED_IN') {
           console.log('User has signed in');
           console.log('session', session);
+          console.log('uid is', session.user.id)
+          console.log('uid is', session.user)
           const profileImageUrl = session.user.user_metadata.avatar_url;
           dispatch(updateUserDetails({
             userName: session.user.user_metadata.full_name,
-            userId: session.user.id,
+            userId: session.user.id, 
             userProfilePhoto: session.user.user_metadata.avatar_url,
             userToken: session.access_token
           }));
