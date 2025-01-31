@@ -28,8 +28,18 @@ function Header() {
     console.log('Logging out');
     supabase.auth.signOut().then(() => {
       console.log('User has signed out');
-      dispatch(logoutUser());
-      navigation('/');
+      // dispatch(logoutUser());
+      // navigation('/');
+      const googleLogoutURL = "https://accounts.google.com/logout";
+      const newWindow = window.open(googleLogoutURL, "_blank", "width=500,height=500");
+  
+      setTimeout(() => {
+          if (newWindow) {
+              newWindow.close();
+          }
+          dispatch(logoutUser()); 
+          navigation('/');
+      }, 1500); // Give time for Google logout before redirecting
     });
   }
 
