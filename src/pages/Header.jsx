@@ -28,18 +28,18 @@ function Header() {
     console.log('Logging out');
     supabase.auth.signOut().then(() => {
       console.log('User has signed out');
-      // dispatch(logoutUser());
-      // navigation('/');
-      const googleLogoutURL = "https://accounts.google.com/logout";
-      const newWindow = window.open(googleLogoutURL, "_blank", "width=500,height=500");
+      dispatch(logoutUser());
+      navigation('/');
+      // const googleLogoutURL = "https://accounts.google.com/logout";
+      // const newWindow = window.open(googleLogoutURL, "_blank", "width=500,height=500");
   
-      setTimeout(() => {
-          if (newWindow) {
-              newWindow.close();
-          }
-          dispatch(logoutUser()); 
-          navigation('/');
-      }, 1500); // Give time for Google logout before redirecting
+      // setTimeout(() => {
+      //     if (newWindow) {
+      //         newWindow.close();
+      //     }
+      //     dispatch(logoutUser()); 
+      //     navigation('/');
+      // }, 1500); // Give time for Google logout before redirecting
     });
   }
 
@@ -58,12 +58,19 @@ function Header() {
     <nav className={`${
           isOpen ? 'block' : 'hidden'
         } sm:flex sm:items-center sm:space-x-6 absolute sm:static top-14 left-0 w-full sm:w-auto bg-white sm:bg-transparent shadow-md sm:shadow-none px-4 sm:px-0 py-3 sm:py-0`}>
-    <Link to="/scan" className="pr-5" onClick={()=>setIsOpen(false)}>
+    {userDetails.userToken ? (<Link to="/scan" className="pr-5" onClick={()=>setIsOpen(false)}>
         Upload Document
       </Link>
-      <Link to="/history" className="pr-5" onClick={()=>setIsOpen(false)}>
+   ) : (
+    <Link to="/" className="pr-5" onClick={()=>setIsOpen(false)}>
+    Upload Document
+  </Link>
+   )}
+      {userDetails.userToken && (
+        <Link to="/history" className="pr-5" onClick={()=>setIsOpen(false)}>
         Document History
-      </Link>
+      </Link> 
+      )}
       {/* <Link to="/" className="pr-5">
         Settings
       </Link> */}
