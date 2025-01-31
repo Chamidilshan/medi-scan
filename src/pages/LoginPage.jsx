@@ -74,9 +74,9 @@ const LoginPage = () => {
 
     event.preventDefault();
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider: 'google', 
       options: {
-        redirectTo: window.location.origin
+        redirectTo: import.meta.env.VITE_SUPABASE_REDIRECT_URL
       }
 
     });
